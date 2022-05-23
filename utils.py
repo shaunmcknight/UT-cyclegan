@@ -22,19 +22,22 @@ from PIL import Image
 ########################################################
 
 
-def convert_to_rgb(image):
-    rgb_image = Image.new("RGB", image.size)
-    rgb_image.paste(image)
-    return rgb_image
+# def convert_to_rgb(image):
+#     rgb_image = Image.new("RGB", image.size)
+#     rgb_image.paste(image)
+#     return rgb_image
 
 
 class ImageDataset(Dataset):
     def __init__(self, root, transforms_=None, unaligned=False, mode="train"):
-        self.transform = transforms.Compose(transforms_)
+        self.transform = transforms_
         self.unaligned = unaligned
 
-        self.files_A = sorted(glob.glob(os.path.join(root, "%sA" % mode) + "/*.*"))
-        self.files_B = sorted(glob.glob(os.path.join(root, "%sB" % mode) + "/*.*"))
+        # self.files_A = sorted(glob.glob(os.path.join(root, "%sA" % mode) + "/*.*"))
+        # self.files_B = sorted(glob.glob(os.path.join(root, "%sB" % mode) + "/*.*"))
+        
+        self.files_A = np.load(glob.glob(os.path.join(root, "%sA" % mode) + "/*.*")[0])
+        self.files_B = np.load(glob.glob(os.path.join(root, "%sB" % mode) + "/*.*")[0])
         # print("self.files_B ", self.files_B)
         """ Will print below array with all file names
         ['/content/drive/MyDrive/All_Datasets/summer2winter_yosemite/trainB/2005-06-26 14:04:52.jpg',
@@ -42,23 +45,21 @@ class ImageDataset(Dataset):
         """
 
     def __getitem__(self, index):
-        image_A = Image.open(self.files_A[index % len(self.files_A)])
+        image_A = torch.from_numpy(self.files_A[index % len(self.files_A)])
         # a % b => a is divided by b, and the remainder of that division is returned.
 
         if self.unaligned:
-            image_B = Image.open(self.files_B[random.randint(0, len(self.files_B) - 1)])
+            image_B = torch.from_numpy(self.files_B[random.randint(0, len(self.files_B) - 1)])
         else:
-            image_B = Image.open(self.files_B[index % len(self.files_B)])
-
-        # Convert grayscale images to rgb
-        if image_A.mode != "RGB":
-            image_A = convert_to_rgb(image_A)
-        if image_B.mode != "RGB":
-            image_B = convert_to_rgb(image_B)
-
-        item_A = self.transform(image_A)
-        item_B = self.transform(image_B)
-
+            image_B = torch.from_numpy(self.files_B[index % len(self.files_B)])
+        
+        if self.transform != None:
+            item_A = self.transform(image_A)
+            item_B = self.transform(image_B)
+        else:
+            item_A = image_A
+            item_B = image_B
+            
         # Finally ruturn a dict
         return {"A": item_A, "B": item_B}
 

@@ -51,7 +51,7 @@ hp = Hyperparameters(
     b1=0.5,
     b2=0.999,
     n_cpu=8,
-    img_size=128,
+    img_size=64,
     channels=3,
     n_critic=5,
     sample_interval=100,
@@ -65,7 +65,7 @@ hp = Hyperparameters(
 ##############################################
 
 # Root Path for Google Drive
-root_path = "C:/Users/Shaun McKnight/OneDrive - University of Strathclyde/PhD/Data/Other data sets/summer2winter_yosemite"
+root_path = r"C:\Users\Shaun McKnight\OneDrive - University of Strathclyde\PhD\Data\civa2experimental"
 
 # Root Path for Kaggle
 # root_path = '../input/summer2winter-yosemite'
@@ -110,21 +110,25 @@ def plot_output(path, x, y):
 transforms_ = [
     transforms.Resize((hp.img_size, hp.img_size), Image.BICUBIC),
     transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+    # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
 ]
+transform = transforms.Compose(transforms_)
 
 train_dataloader = DataLoader(
-    ImageDataset(root_path, mode=hp.dataset_train_mode, transforms_=transforms_),
+    ImageDataset(root_path, mode=hp.dataset_train_mode),
     batch_size=hp.batch_size,
     shuffle=True,
-    num_workers=1,
+    # num_workers=1,
 )
 val_dataloader = DataLoader(
-    ImageDataset(root_path, mode=hp.dataset_test_mode, transforms_=transforms_),
+    ImageDataset(root_path, mode=hp.dataset_test_mode),
     batch_size=16,
     shuffle=True,
-    num_workers=1,
+    # num_workers=1,
 )
+
+
+test = next(iter(val_dataloader))
 
 ##############################################
 # SAMPLING IMAGES
