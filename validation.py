@@ -62,7 +62,7 @@ hp = Hyperparameters(
     lambda_id=5.0,
 )
 
-root_path = "/home/euan/Shaun/Datasets/summer2winter_yosemite"
+root_path = r"C:\Users\Shaun McKnight\OneDrive - University of Strathclyde\PhD\Data\civa2experimental"
 
 
 ########################################################
@@ -73,6 +73,20 @@ def show_img(img, size=10):
     plt.imshow(np.transpose(npimg, (1, 2, 0)))
     plt.figure(figsize=(size, size))
     plt.show()
+
+# def single_img(img, size=10):
+    
+#     i = 9
+#     val_data = ImageDataset(root_path, mode=hp.dataset_test_mode)
+#     batch = val_data[i]
+
+#     # Set model input
+#     img = Variable(batch["A"].type(Tensor))
+
+#     npimg = img.cpu().detach().numpy()
+#     plt.imshow(np.transpose(npimg, (1, 2, 0)))
+#     plt.figure()
+#     plt.show()
 
 
 def to_img(x):
@@ -85,17 +99,6 @@ def plot_output(path, x, y):
     plt.figure(figsize=(x, y))
     plt.imshow(img)
     plt.show()
-
-
-##############################################
-# Defining Image Transforms to apply
-##############################################
-transforms_ = [
-    transforms.Resize((hp.img_size, hp.img_size), Image.BICUBIC),
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-]
-
 
 ##############################################
 # Initialize generator and discriminator
@@ -124,13 +127,12 @@ Gen_BA.load_state_dict(torch.load('saved_Gen_BA.pt'))
 ##############################################
 # Final Validation Function
 ##############################################
-
+    
 
 def validate(
         Gen_AB,
         Gen_BA,
-            
-):
+    ):
     
     start_time = time.time()
     i = 55
@@ -173,8 +175,8 @@ def validate(
     image_grid = make_grid([real_A, fake_B, reconstructed_A, real_B, fake_A, reconstructed_B], normalize=True)
     show_img(image_grid, 30)
     
-    path = "/home/euan/Shaun/Datasets/summer2winter_yosemite/validate%s.png" % (i)
-    save_image(image_grid, path, normalize=False)
+    # path = "/home/euan/Shaun/Datasets/summer2winter_yosemite/validate%s.png" % (i)
+    # save_image(image_grid, path, normalize=False)
     
     # print(summary(Gen_BA, input_size=(3,128,128)))
     print("Total time taken ", str(time.time()-start_time))

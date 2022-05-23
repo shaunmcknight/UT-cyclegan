@@ -52,10 +52,10 @@ hp = Hyperparameters(
     b2=0.999,
     n_cpu=8,
     img_size=64,
-    channels=3,
+    channels=1,
     n_critic=5,
     sample_interval=100,
-    num_residual_blocks=19,
+    num_residual_blocks=6,
     lambda_cyc=10.0,
     lambda_id=5.0,
 )
