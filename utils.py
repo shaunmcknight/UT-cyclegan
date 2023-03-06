@@ -30,14 +30,24 @@ from PIL import Image
 
 class ImageDataset(Dataset):
     def __init__(self, root, transforms_=None, unaligned=False, mode="train"):
+        # self.transform = transforms.Compose(transforms_)
         self.transform = transforms_
         self.unaligned = unaligned
 
         # self.files_A = sorted(glob.glob(os.path.join(root, "%sA" % mode) + "/*.*"))
         # self.files_B = sorted(glob.glob(os.path.join(root, "%sB" % mode) + "/*.*"))
         
+        # print(root)
+        # print((os.path.join(root, "%sA" % mode) + "/*.*"))
+        print(glob.glob(os.path.join(root, "%sA" % mode) + "/*.*"))
+        print(glob.glob(os.path.join(root, "%sB" % mode) + "/*.*"))
         self.files_A = np.load(glob.glob(os.path.join(root, "%sA" % mode) + "/*.*")[0])
         self.files_B = np.load(glob.glob(os.path.join(root, "%sB" % mode) + "/*.*")[0])
+        
+        # print('Type of dataset: ', type(self.files_A))
+        print('Shape of dataset A: ', np.shape(self.files_A))
+        print('Shape of dataset B ', np.shape(self.files_B))
+
         # print("self.files_B ", self.files_B)
         """ Will print below array with all file names
         ['/content/drive/MyDrive/All_Datasets/summer2winter_yosemite/trainB/2005-06-26 14:04:52.jpg',
@@ -49,7 +59,9 @@ class ImageDataset(Dataset):
         # a % b => a is divided by b, and the remainder of that division is returned.
 
         if self.unaligned:
-            image_B = torch.from_numpy(self.files_B[random.randint(0, len(self.files_B) - 1)])
+            image_B = torch.from_numpy(
+                self.files_B[random.randint(0, len(self.files_B) - 1)]
+            )
         else:
             image_B = torch.from_numpy(self.files_B[index % len(self.files_B)])
         
@@ -59,7 +71,6 @@ class ImageDataset(Dataset):
         else:
             item_A = image_A
             item_B = image_B
-            
         # Finally ruturn a dict
         return {"A": item_A, "B": item_B}
 

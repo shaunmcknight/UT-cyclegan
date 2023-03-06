@@ -9,7 +9,6 @@ from torch.utils.data import Dataset
 from PIL import Image
 
 
-
 ##############################################
 # Residual block with two convolution layers.
 ##############################################
@@ -42,7 +41,7 @@ class ResidualBlock(nn.Module):
 """ As per Paper -- Generator with 9 residual blocks consists of:
 c7s1-64,d128,d256,R256,R256,R256, R256,R256,R256,R256,R256,R256,
 u128, u64,c7s1-3
-  """
+ """
 
 
 class GeneratorResNet(nn.Module):
@@ -58,12 +57,13 @@ class GeneratorResNet(nn.Module):
         # First c7s1-64
         model = [
             nn.ReflectionPad2d(channels),
-            nn.Conv2d(channels, out_channels, kernel_size=3,
-                      stride = 1, padding = 0), # added padding of 2 (previously 1) for 64&64 image size
+            nn.Conv2d(channels, out_channels, kernel_size=7, padding=2),
             nn.InstanceNorm2d(out_channels),
             nn.ReLU(inplace=True),
         ]
+        
         in_channels = out_channels
+
         # Downsampling
         # d128 => d256
         for _ in range(2):
@@ -97,15 +97,11 @@ class GeneratorResNet(nn.Module):
             ]
             in_channels = out_channels
 
-
         # Output layer
-        # c7s1-3            
-        # print(out_channels)
-
+        # c7s1-3
         model += [
             nn.ReflectionPad2d(channels),
-            nn.Conv2d(out_channels, channels,
-                      kernel_size=3, stride = 1, padding = 0),# added padding of 2 (previously 1) for 64&64 image size
+            nn.Conv2d(out_channels, channels, 7, padding = 2),
             nn.Tanh(),
         ]
 
