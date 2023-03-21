@@ -1,4 +1,4 @@
-# ut_cyclegan
+# UT cyclegan
 A modified cycleGAN for converting simulated UT images to more experimentaly representative UT images.
 
 Example simulated defect:
