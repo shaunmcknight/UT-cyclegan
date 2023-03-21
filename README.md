@@ -1,5 +1,5 @@
 # UT cyclegan
-A image-to-image generative model which introduces task specific modifications to CycleGAN, to learn the mapping from physics-based simulations of defect indications to experimental indications in resulting ultrasound images. The resulting synthetic dataset resulted in an improved F1 classification score on experimental ultrasonic images of 0.45 (from 0.394 to 0.843), when training a CNN classifier on simulated and GAN generated data.
+A image-to-image generative model which introduces task specific modifications to CycleGAN, including an additional loss function, to learn the mapping from physics-based simulations of defect indications to experimental indications in resulting ultrasound images. The resulting synthetic dataset resulted in an improved F1 classification score on experimental ultrasonic images of 0.45 (from 0.394 to 0.843), when training a CNN classifier on simulated and GAN generated data respectively.
 
 
 Example simulated defect:
