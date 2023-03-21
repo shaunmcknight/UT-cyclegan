@@ -12,11 +12,14 @@ Example experimental response:
 ![image](https://user-images.githubusercontent.com/71640417/223427454-39b883a9-fa3c-454f-b102-016a923d0b37.png)
 
 
+
 Introduction of a mid activation map loss to encourage accurate defect reconstruction.
 
 ![image](https://user-images.githubusercontent.com/71640417/223427211-148c4e1f-77ac-457b-9bdf-5d113823c19f.png)
 
 
-Example of GAN generated responses and comparative experimental:
 
-![image](https://user-images.githubusercontent.com/71640417/223427551-666e0ead-39f1-439b-8279-45f022c668d6.png)
+Example of GAN generated responses and respective simulated response:
+
+![image](https://user-images.githubusercontent.com/71640417/226600685-9bd91f48-129e-46d2-84c4-9b922a9ffbda.png)
+
